@@ -21,6 +21,5 @@ cost as spend,
 impressions,
 clicks,
 complete_payment_events as purchases,
-complete_payment_value as revenue,
-web_add_to_cart_events as atc
-FROM {{ ref('tiktok_performance_by_ad') }}
+complete_payment_value as revenue
+FROM {{ ref('tiktok_performance_by_ad') }}
