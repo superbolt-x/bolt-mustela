@@ -24,7 +24,7 @@ WITH data as
         SELECT date, date_granularity, spend, 0 as gross_sales, 0 as subtotal_sales, 0 as orders, 0 as first_orders, impressions, clicks, add_to_cart, purchases, revenue
         FROM {{ source('reporting','googleads_campaign_performance') }}
         UNION ALL
-        SELECT date, date_granularity, spend, 0 as gross_sales, 0 as subtotal_sales, 0 as orders, 0 as first_orders, impressions, clicks, 0 as add_to_cart, conversions as purchases, revenue
+        SELECT date, date_granularity, spend, 0 as gross_sales, 0 as subtotal_sales, 0 as orders, 0 as first_orders, impressions, clicks, 0 as add_to_cart, purchases, revenue
         FROM {{ source('reporting','bingads_campaign_performance') }}
         UNION ALL
         SELECT date, date_granularity, sum(0) as spend, sum(gross_sales) as gross_sales, sum(subtotal_sales) as subtotal_sales, sum(orders) as orders, sum(first_orders) as first_orders, 0 as impressions, 0 as clicks, 0 as add_to_cart, 0 as purchases, 0 as revenue
