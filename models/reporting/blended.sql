@@ -21,7 +21,7 @@ WITH data as
         FROM {{ source('reporting','facebook_ad_performance') }}
         WHERE campaign_name !~* 'traffic' OR campaign_name != '[Superbolt] - Brand Awareness - March 2022'
         UNION ALL
-        SELECT date, date_granularity, spend, 0 as gross_sales, 0 as subtotal_sales, 0 as orders, 0 as first_orders, impressions, clicks, googleshoppingappaddtocart as add_to_cart, conversions as purchases, conversions_value as revenue
+        SELECT date, date_granularity, spend, 0 as gross_sales, 0 as subtotal_sales, 0 as orders, 0 as first_orders, impressions, clicks, add_to_cart, conversions as purchases, conversions_value as revenue
         FROM {{ source('reporting','googleads_campaign_performance') }}
         UNION ALL
         SELECT date, date_granularity, spend, 0 as gross_sales, 0 as subtotal_sales, 0 as orders, 0 as first_orders, impressions, clicks, 0 as add_to_cart, conversions as purchases, revenue
