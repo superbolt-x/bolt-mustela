@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: ga4_raw
+    schema: ga4_raw
+    tables:
+      - name: traffic_sources_session
+      - name: events_session
+
+models:
+  - name: _stg_ga4_events_session
+    columns:
+      - name: event_name
+        tests: 
+          - unique
+          - not_null
+  - name: ga4_traffic_sources_session
+    columns:
+      - name: unique_key
+        tests: 
+          - unique
+          - not_null
