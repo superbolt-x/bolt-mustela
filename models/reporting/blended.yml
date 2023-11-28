@@ -22,6 +22,3 @@ sources:
 
     - name: shopify_sales
       identifier: mustela_shopify_sales
-
-    - name: ga4_performance_by_campaign
-      identifier: mustela_ga4_performance_by_campaign
