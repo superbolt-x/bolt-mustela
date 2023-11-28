@@ -37,3 +37,6 @@ packages:
     
   - git: "https://github.com/superbolt-x/bolt-dbt-recharge-package.git"
     revision: main
+    
+  - git: "https://github.com/superbolt-x/bolt-dbt-ga4-package.git"
+    revision: main
