@@ -17,6 +17,9 @@ sources:
     - name: googleads_campaign_performance
       identifier: mustela_googleads_campaign_performance
 
+    - name: tiktok_campaign_performance
+      identifier: mustela_tiktok_campaign_performance
+
     - name: bingads_campaign_performance
       identifier: mustela_bingads_campaign_performance
 
