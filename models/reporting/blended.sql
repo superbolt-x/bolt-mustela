@@ -33,6 +33,7 @@ WITH data as
             spend, 0 as gross_sales, 0 as subtotal_sales, 0 as orders, 0 as first_orders, impressions, clicks, add_to_cart, purchases, revenue, 
 			0 as sessions, 0 as engaged_sessions, 0 as new_users, 0 as ga4_purchases, 0 as ga4_revenue
         FROM {{ source('reporting','googleads_campaign_performance') }}
+		UNION ALL
 		SELECT 'Tiktok Ads' as channel, date, date_granularity, 
             spend, 0 as gross_sales, 0 as subtotal_sales, 0 as orders, 0 as first_orders, impressions, clicks, atc as add_to_cart, purchases, revenue, 
 			0 as sessions, 0 as engaged_sessions, 0 as new_users, 0 as ga4_purchases, 0 as ga4_revenue
