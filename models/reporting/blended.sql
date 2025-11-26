@@ -2,10 +2,6 @@
     alias = target.database + '_blended'
 )}}
 
-{{ config (
-    alias = target.database + '_blended_performance'
-)}}
-
 {%- set date_granularity_list = ['day','week','month','quarter','year'] -%}
 
 
