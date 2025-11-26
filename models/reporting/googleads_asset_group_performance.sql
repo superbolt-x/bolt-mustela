@@ -16,7 +16,7 @@ date_granularity,
 spend,
 impressions,
 clicks,
-googleshoppingappaddtocart as add_to_cart,
+0 as add_to_cart,
 conversions as purchases,
 conversions_value as revenue
 FROM {{ ref('googleads_performance_by_asset_group') }}
