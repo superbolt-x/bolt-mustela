@@ -26,5 +26,11 @@ sources:
     - name: shopify_sales
       identifier: mustela_shopify_sales
 
+    - name: shopify_daily_sales_by_order
+      identifier: mustela_shopify_daily_sales_by_order
+
+    - name: shopify_daily_refunds
+      identifier: mustela_shopify_daily_refunds
+
     - name: ga4_campaign_performance
       identifier: mustela_ga4_campaign_performance
