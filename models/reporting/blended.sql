@@ -61,7 +61,7 @@ paid_data as
     GROUP BY channel, campaign_id, campaign_name, date, date_granularity),
 
 ga4_data as 
-    (SELECT session_campaign_id::varchar as campaign_id, date, date_granularity, 
+    (SELECT campaign_id::varchar as campaign_id, date, date_granularity, 
     sum(sessions) as sessions, sum(engaged_sessions) as engaged_sessions, sum(purchase) as ga4_purchases, sum(purchase_value) as ga4_revenue
     FROM {{ source('reporting','ga4_campaign_performance') }}
     GROUP BY 1,2,3),
