@@ -1,5 +1,5 @@
 {{ config (
-    alias = target.database + '_ga4_performance_granular'
+    alias = target.database + '_ga4_granular_performance'
 )}}
 
 SELECT 
@@ -22,4 +22,4 @@ total_revenue,
 purchase,
 session_duration,
 bounced_sessions
-FROM {{ ref('ga4_performance_by_campaign') }}
+FROM {{ ref('ga4_performance_granular') }}
