@@ -7,7 +7,13 @@ sources:
   tables:
     - name: dates
       identifier: dates
-
+      
+- name: tiktok_raw
+  schema: tiktok_raw
+  tables:
+    - name: tiktok_gmv_campaign_performance
+      identifier: gmv_campaign_country_report_daily
+    
 - name: reporting
   schema: reporting
   tables:
