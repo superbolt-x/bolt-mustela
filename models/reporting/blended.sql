@@ -52,23 +52,23 @@ paid_data as
 		UNION ALL
 		SELECT 'Tiktok Ads' as channel, campaign_id, campaign_name, date_trunc('day',stat_time_day::date)::date as date, 'day' as date_granularity, 
 			spend, 0 as clicks, 0 as impressions, 0 as add_to_cart, 0 as paid_purchases, 0 as paid_revenue
-        FROM {{ source('tiktok_raw','tiktok_gmv_campaign_country_report_daily') }}
+        FROM {{ source('tiktok_raw','tiktok_gmv_campaign_performance') }}
         UNION ALL
 		SELECT 'Tiktok Ads' as channel, campaign_id, campaign_name, date_trunc('week',stat_time_day::date)::date as date, 'week' as date_granularity, 
 			spend, 0 as clicks, 0 as impressions, 0 as add_to_cart, 0 as paid_purchases, 0 as paid_revenue
-        FROM {{ source('tiktok_raw','tiktok_gmv_campaign_country_report_daily') }}
+        FROM {{ source('tiktok_raw','tiktok_gmv_campaign_performance') }}
         UNION ALL
 		SELECT 'Tiktok Ads' as channel, campaign_id, campaign_name, date_trunc('month',stat_time_day::date)::date as date, 'month' as date_granularity, 
 			spend, 0 as clicks, 0 as impressions, 0 as add_to_cart, 0 as paid_purchases, 0 as paid_revenue
-        FROM {{ source('tiktok_raw','tiktok_gmv_campaign_country_report_daily') }}
+        FROM {{ source('tiktok_raw','tiktok_gmv_campaign_performance') }}
         UNION ALL
 		SELECT 'Tiktok Ads' as channel, campaign_id, campaign_name, date_trunc('quarter',stat_time_day::date)::date as date, 'quarter' as date_granularity, 
 			spend, 0 as clicks, 0 as impressions, 0 as add_to_cart, 0 as paid_purchases, 0 as paid_revenue
-        FROM {{ source('tiktok_raw','tiktok_gmv_campaign_country_report_daily') }}
+        FROM {{ source('tiktok_raw','tiktok_gmv_campaign_performance') }}
         UNION ALL
 		SELECT 'Tiktok Ads' as channel, campaign_id, campaign_name, date_trunc('year',stat_time_day::date)::date as date, 'year' as date_granularity, 
 			spend, 0 as clicks, 0 as impressions, 0 as add_to_cart, 0 as paid_purchases, 0 as paid_revenue
-        FROM {{ source('tiktok_raw','tiktok_gmv_campaign_country_report_daily') }}
+        FROM {{ source('tiktok_raw','tiktok_gmv_campaign_performance') }}
         UNION ALL
         SELECT 'Bing' as channel, campaign_id, campaign_name, date, date_granularity, 
             spend, clicks, impressions, 0 as add_to_cart, purchases as paid_purchases, revenue as paid_revenue
