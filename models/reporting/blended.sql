@@ -9,12 +9,10 @@ WITH refund_order_data AS
     (SELECT date, day, week, month, quarter, year, 
         order_id, customer_order_index, gross_revenue, total_revenue, subtotal_discount, 0 as subtotal_refund 
     FROM {{ source('reporting','shopify_daily_sales_by_order') }}
-    WHERE cancelled_at IS NULL
     UNION ALL
     SELECT date, day, week, month, quarter, year, 
         null as order_id, null as customer_order_index, 0 as gross_revenue, 0 as total_revenue, 0 as subtotal_discount, subtotal_refund 
-    FROM {{ source('reporting','shopify_daily_refunds') }} 
-    WHERE cancelled_at IS NULL),
+    FROM {{ source('reporting','shopify_daily_refunds') }} ),
     
     initial_sho_data AS (
         {% for granularity in date_granularity_list %}
