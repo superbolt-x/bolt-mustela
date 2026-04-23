@@ -97,7 +97,6 @@ sho_data as
             0 as ga4_purchases,
             0 as ga4_revenue 
     	FROM {{ source('reporting','shopify_sales') }}
-        GROUP BY channel, date, campaign_name, date_granularity
     )
     
 SELECT 
