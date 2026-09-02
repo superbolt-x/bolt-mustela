@@ -29,6 +29,9 @@ sources:
     - name: bingads_campaign_performance
       identifier: mustela_bingads_campaign_performance
 
+    - name: openaiads_campaign_performance
+      identifier: mustela_openaiads_campaign_performance
+
     - name: shopify_sales
       identifier: mustela_shopify_sales
 

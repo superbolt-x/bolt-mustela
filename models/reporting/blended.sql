@@ -8,46 +8,58 @@ paid_data as
         COALESCE(SUM(impressions),0) as impressions, COALESCE(SUM(add_to_cart),0) as add_to_cart, COALESCE(SUM(paid_purchases),0) as paid_purchases, COALESCE(SUM(paid_revenue),0) as paid_revenue, 
         0 as shopify_first_orders, 0 as shopify_orders, 0 as shopify_first_sales, 0 as shopify_sales, 0 as shopify_first_net_sales, 0 as shopify_net_sales
     FROM
-        (SELECT 'Meta' as channel, campaign_id, campaign_name, date, date_granularity, 
+        (SELECT 'Meta' as channel, campaign_id::varchar as campaign_id, campaign_name, date, date_granularity, 
             spend, link_clicks as clicks, impressions, add_to_cart, purchases as paid_purchases, revenue as paid_revenue
         FROM {{ source('reporting','facebook_ad_performance') }}
         UNION ALL
-        SELECT 'Google Ads' as channel, campaign_id, campaign_name, date, date_granularity,
+        SELECT 'Google Ads' as channel, campaign_id::varchar as campaign_id, campaign_name, date, date_granularity,
             spend, clicks, impressions, add_to_cart, purchases as paid_purchases, revenue as paid_revenue
         FROM {{ source('reporting','googleads_campaign_performance') }}
 		UNION ALL
-		SELECT 'Tiktok Ads' as channel, campaign_id, campaign_name, date, date_granularity, 
+		SELECT 'Tiktok Ads' as channel, campaign_id::varchar as campaign_id, campaign_name, date, date_granularity, 
 			spend, clicks, impressions, atc as add_to_cart, purchases as paid_purchases, revenue as paid_revenue
         FROM {{ source('reporting','tiktok_campaign_performance') }}
 		UNION ALL
-		SELECT 'Tiktok Ads' as channel, campaign_id, campaign_name, date_trunc('day',stat_time_day::date)::date as date, 'day' as date_granularity, 
+		SELECT 'Tiktok Ads' as channel, campaign_id::varchar as campaign_id, campaign_name, date_trunc('day',stat_time_day::date)::date as date, 'day' as date_granularity, 
 			spend, 0 as clicks, 0 as impressions, 0 as add_to_cart, 0 as paid_purchases, 0 as paid_revenue
         FROM {{ source('tiktok_raw','tiktok_gmv_campaign_performance') }}
         UNION ALL
-		SELECT 'Tiktok Ads' as channel, campaign_id, campaign_name, date_trunc('week',stat_time_day::date)::date as date, 'week' as date_granularity, 
+		SELECT 'Tiktok Ads' as channel, campaign_id::varchar as campaign_id, campaign_name, date_trunc('week',stat_time_day::date)::date as date, 'week' as date_granularity, 
 			spend, 0 as clicks, 0 as impressions, 0 as add_to_cart, 0 as paid_purchases, 0 as paid_revenue
         FROM {{ source('tiktok_raw','tiktok_gmv_campaign_performance') }}
         UNION ALL
-		SELECT 'Tiktok Ads' as channel, campaign_id, campaign_name, date_trunc('month',stat_time_day::date)::date as date, 'month' as date_granularity, 
+		SELECT 'Tiktok Ads' as channel, campaign_id::varchar as campaign_id, campaign_name, date_trunc('month',stat_time_day::date)::date as date, 'month' as date_granularity, 
 			spend, 0 as clicks, 0 as impressions, 0 as add_to_cart, 0 as paid_purchases, 0 as paid_revenue
         FROM {{ source('tiktok_raw','tiktok_gmv_campaign_performance') }}
         UNION ALL
-		SELECT 'Tiktok Ads' as channel, campaign_id, campaign_name, date_trunc('quarter',stat_time_day::date)::date as date, 'quarter' as date_granularity, 
+		SELECT 'Tiktok Ads' as channel, campaign_id::varchar as campaign_id, campaign_name, date_trunc('quarter',stat_time_day::date)::date as date, 'quarter' as date_granularity, 
 			spend, 0 as clicks, 0 as impressions, 0 as add_to_cart, 0 as paid_purchases, 0 as paid_revenue
         FROM {{ source('tiktok_raw','tiktok_gmv_campaign_performance') }}
         UNION ALL
-		SELECT 'Tiktok Ads' as channel, campaign_id, campaign_name, date_trunc('year',stat_time_day::date)::date as date, 'year' as date_granularity, 
+		SELECT 'Tiktok Ads' as channel, campaign_id::varchar as campaign_id, campaign_name, date_trunc('year',stat_time_day::date)::date as date, 'year' as date_granularity, 
 			spend, 0 as clicks, 0 as impressions, 0 as add_to_cart, 0 as paid_purchases, 0 as paid_revenue
         FROM {{ source('tiktok_raw','tiktok_gmv_campaign_performance') }}
         UNION ALL
-        SELECT 'Bing' as channel, campaign_id, campaign_name, date, date_granularity, 
+        SELECT 'Bing' as channel, campaign_id::varchar as campaign_id, campaign_name, date, date_granularity, 
             spend, clicks, impressions, 0 as add_to_cart, purchases as paid_purchases, revenue as paid_revenue
         FROM {{ source('reporting','bingads_campaign_performance') }}
+        UNION ALL
+        -- OpenAI Ads exposes no revenue field and no campaign currently optimises
+        -- order_created, so purchases/revenue are 0 here. See the note in
+        -- openaiads_campaign_performance.sql before changing that.
+        SELECT 'OpenAI Ads' as channel, campaign_id::varchar as campaign_id, campaign_name, date, date_granularity,
+            spend, clicks, impressions, add_to_cart, 0 as paid_purchases, 0 as paid_revenue
+        FROM {{ source('reporting','openaiads_campaign_performance') }}
         )
     GROUP BY channel, campaign_id, campaign_name, date, date_granularity),
 
 ga4_data as 
-    (SELECT campaign_id::varchar as campaign_id, date, date_granularity, 
+    -- GA4 reports OpenAI Ads traffic as chatgpt.com / paid with campaign_id
+    -- '(not set)' and the campaign *id* sitting in campaign_name. Recover it so
+    -- those sessions join to openaiads_campaign_performance below. The 'cmpn_'
+    -- prefix is unique to that source across the whole GA4 table.
+    (SELECT (case when left(campaign_name,5) = 'cmpn_' then campaign_name
+                  else campaign_id end)::varchar as campaign_id, date, date_granularity, 
     sum(sessions) as sessions, sum(engaged_sessions) as engaged_sessions, sum(purchase) as ga4_purchases, sum(purchase_value) as ga4_revenue
     FROM {{ source('reporting','ga4_campaign_performance') }}
     GROUP BY 1,2,3),
