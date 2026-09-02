@@ -16,7 +16,7 @@ date_granularity,
 spend,
 impressions,
 clicks,
-0 as add_to_cart,
-conversions as purchases,
-conversions_value as revenue
+addtocart as add_to_cart,
+dasale+httpswwwmustelausacomga4webpurchase as purchases,
+dasale_value+httpswwwmustelausacomga4webpurchase_value as revenue
 FROM {{ ref('googleads_performance_by_asset_group') }}
